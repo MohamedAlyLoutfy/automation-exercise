@@ -1,0 +1,59 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  style_check:
+    name: Check Code Style
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: pip install black
+      - name: Run black
+        run: black --check .
+
+  test:
+    name: Run Tests and Collect Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: pip install pytest coverage
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=. --cov-report=term
+          mv .coverage coverage-data/.coverage
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage-data/.coverage
+          retention-days: 1
+
+  coverage_report:
+    name: Generate Coverage Report
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage
+      - name: Install dependencies
+        run: pip install coverage
+      - name: Generate coverage report
+        run: |
+          coverage report
+          coverage xml -o coverage.xml
+      - name: Upload coverage.xml artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-xml
+          path: coverage.xml
+          retention-days: 14
