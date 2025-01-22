@@ -51,7 +51,9 @@ jobs:
       - name: Show file structure
         run: |
             pwd
-            ls -R
+            ls
+            cd ..
+            ls
       - name: Generate coverage report
         run: |
           coverage report
