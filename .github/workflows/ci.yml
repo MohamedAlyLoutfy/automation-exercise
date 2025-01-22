@@ -48,6 +48,14 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: coverage
+      - name: Move .coverage file to the expected location
+        run: |
+            if [ -f coverage-data/.coverage ]; then
+            mv coverage-data/.coverage .coverage;
+            else
+            echo ".coverage file not found in coverage-data!";
+            exit 1;
+            fi
       - name: Install dependencies
         run: pip install coverage
       - name: Normalize coverage paths
