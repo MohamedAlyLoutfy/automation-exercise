@@ -48,12 +48,14 @@ jobs:
           name: coverage-report
       - name: Install dependencies
         run: pip install coverage
-      - name: Show file structure
+      - name: Normalize paths in .coverage
         run: |
-            pwd
-            ls
-            cd ..
-            ls
+            if [ -f .coverage ]; then
+            coverage combine;
+            else
+            echo ".coverage file not found!";
+            exit 1;
+            fi
       - name: Generate coverage report
         run: |
           coverage report
