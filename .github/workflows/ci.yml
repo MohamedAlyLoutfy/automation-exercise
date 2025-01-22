@@ -45,7 +45,7 @@ jobs:
       - name: Download coverage artifact
         uses: actions/download-artifact@v4
         with:
-          name: coverage
+          name: coverage-report
       - name: Install dependencies
         run: pip install coverage
       - name: Show file structure
