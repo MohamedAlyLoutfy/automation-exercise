@@ -58,8 +58,6 @@ jobs:
             fi
       - name: Install dependencies
         run: pip install coverage
-      - name: Normalize coverage paths
-        run: coverage combine
       - name: Generate coverage report
         run: |
           coverage report
