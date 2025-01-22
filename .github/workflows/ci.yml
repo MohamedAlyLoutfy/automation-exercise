@@ -11,7 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
       - name: Install dependencies
         run: pip install black
       - name: Run black
@@ -22,15 +26,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
       - name: Install dependencies
         run: |
-            pip install numpy matplotlib pytest coverage pytest-cov
+          pip install numpy matplotlib pytest coverage pytest-cov
+      - name: Ensure .coverage is ignored
+        run: echo '.coverage' >> .gitignore
       - name: Run tests with coverage
         run: |
           pytest --cov=. --cov-report=term --cov-report=xml --cov-config=.coveragerc
       - name: Upload coverage artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: .coverage
@@ -42,26 +52,32 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Download coverage artifact
-        uses: actions/download-artifact@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          name: coverage-report
+          python-version: '3.10'
       - name: Install dependencies
         run: pip install coverage
-      - name: Normalize paths in .coverage
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+      - name: Verify .coverage file
         run: |
-            if [ -f .coverage ]; then
-            coverage combine;
-            else
+          if [ -f .coverage ]; then
+            echo ".coverage file exists!";
+          else
             echo ".coverage file not found!";
             exit 1;
-            fi
+          fi
       - name: Generate coverage report
         run: |
           coverage report
           coverage xml -o coverage.xml
       - name: Upload coverage.xml artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-xml
           path: coverage.xml
