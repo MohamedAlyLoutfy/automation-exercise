@@ -37,6 +37,7 @@ jobs:
           name: coverage
           path: coverage-data/.coverage
           retention-days: 1
+          include-hidden-files: true
 
   coverage_report:
     name: Generate Coverage Report
