@@ -29,13 +29,11 @@ jobs:
       - name: Run tests with coverage
         run: |
           coverage run -m pytest
-          mkdir -p coverage-data
-          mv .coverage coverage-data/.coverage
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v3
         with:
           name: coverage
-          path: coverage-data/.coverage
+          path: .coverage
           retention-days: 1
           include-hidden-files: true
 
@@ -48,14 +46,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: coverage
-      - name: Move .coverage file to the expected location
-        run: |
-            if [ -f coverage-data/.coverage ]; then
-            mv coverage-data/.coverage .coverage;
-            else
-            echo ".coverage file not found in coverage-data!";
-            exit 1;
-            fi
       - name: Install dependencies
         run: pip install coverage
       - name: Generate coverage report
