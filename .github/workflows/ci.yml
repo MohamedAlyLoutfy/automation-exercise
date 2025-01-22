@@ -48,9 +48,13 @@ jobs:
           name: coverage
       - name: Install dependencies
         run: pip install coverage
+      - name: Show file structure
+        run: |
+            pwd
+            ls -R
       - name: Generate coverage report
         run: |
-          coverage report --source=.
+          coverage report
           coverage xml -o coverage.xml
       - name: Upload coverage.xml artifact
         uses: actions/upload-artifact@v3
