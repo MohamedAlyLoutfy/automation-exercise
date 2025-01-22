@@ -34,8 +34,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install numpy matplotlib pytest coverage pytest-cov
-      - name: Ensure .coverage is ignored
-        run: echo '.coverage' >> .gitignore
       - name: Run tests with coverage
         run: |
           pytest --cov=. --cov-report=term --cov-report=xml --cov-config=.coveragerc
