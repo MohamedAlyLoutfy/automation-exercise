@@ -29,6 +29,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           pytest --cov=. --cov-report=term
+          mkdir -p coverage-data
           mv .coverage coverage-data/.coverage
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v3
