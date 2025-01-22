@@ -50,7 +50,7 @@ jobs:
         run: pip install coverage
       - name: Generate coverage report
         run: |
-          coverage report
+          coverage report --source=.
           coverage xml -o coverage.xml
       - name: Upload coverage.xml artifact
         uses: actions/upload-artifact@v3
